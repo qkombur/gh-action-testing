@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: jruipinto/ImageMagick-action@v1
+        with:
+          # ImageMagick command to be executed
+          command: mogrify -path imgs/ -auto-orient -resize x500 imgs/*.*
+      - uses: cmgriffing/scully-gh-pages-action@v9
+        with:
+          access-token: ${{ secrets.ACCESS_TOKEN }}
+          deploy-branch: main
+          build-args: --base-href /
